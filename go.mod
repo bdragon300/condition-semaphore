@@ -1,3 +1,3 @@
-module github.com/bdragon300/awaiting_semaphore
+module github.com/bdragon300/condition_semaphore
 
 go 1.15
