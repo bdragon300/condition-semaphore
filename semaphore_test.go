@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package condition_semaphore_test
+package conditional_semaphore_test
 
 import (
 	"context"
 	"errors"
-	condsema "github.com/bdragon300/condition_semaphore"
+	condsema "github.com/bdragon300/conditional_semaphore"
 	"math/rand"
 	"runtime"
 	"sync"

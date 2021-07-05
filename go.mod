@@ -1,4 +1,4 @@
-module github.com/bdragon300/condition_semaphore
+module github.com/bdragon300/conditional_semaphore
 
 go 1.15
 

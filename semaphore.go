@@ -5,7 +5,7 @@
 /*
 Semaphore with awaiting methods ... TODO: write comment
  */
-package condition_semaphore
+package conditional_semaphore
 
 import (
 	"container/list"
