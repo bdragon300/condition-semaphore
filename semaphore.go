@@ -1,10 +1,7 @@
-// Copyright 2017 The Go Authors. All rights reserved.
+// Copyright 2021 Igor Derkach. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-/*
-Semaphore with awaiting methods ... TODO: write comment
-*/
 package conditional_semaphore
 
 import (
