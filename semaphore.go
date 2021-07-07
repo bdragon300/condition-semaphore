@@ -132,10 +132,14 @@ func (s *Weighted) Release(n int64) {
 	s.mu.Unlock()
 }
 
+// AwaitLessOrEqual blocks execution until the current semaphore weight will be less or equal to the given value, or
+// when the context will get cancelled.
 func (s *Weighted) AwaitLessOrEqual(ctx context.Context, n int64) error {
 	return s.conditionalAwait(ctx, n, lessOrEqual)
 }
 
+// AwaitMoreOrEqual blocks execution until the current semaphore weight will be more or equal to the given value, or
+// when the context will get cancelled.
 func (s *Weighted) AwaitMoreOrEqual(ctx context.Context, n int64) error {
 	if n > s.size {
 		<-ctx.Done()
@@ -181,7 +185,7 @@ func (s *Weighted) conditionalAwait(ctx context.Context, n int64, condKind condW
 
 	s.mu.Lock()
 	if isCondWaiterTrue(condKind, s.cur, n) {
-		// s.cur already meets to a condition
+		// s.cur already meets to the condition
 		s.mu.Unlock()
 		return nil
 	}
