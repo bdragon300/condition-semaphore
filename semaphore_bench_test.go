@@ -137,7 +137,7 @@ func prepareCondWaiters(sem *conditional_semaphore.Weighted, count, semCapacity 
 	ctx, cancel = context.WithCancel(context.Background())
 	for i := 0; i < count; i++ {
 		go func() {
-			_ = sem.AwaitMoreOrEqual(ctx, int64(rand.Intn(semCapacity- startFrom + 1) + startFrom))
+			_ = sem.AwaitMoreOrEqual(ctx, int64(rand.Intn(semCapacity-startFrom+1)+startFrom))
 		}()
 		runtime.Gosched()
 	}
@@ -154,14 +154,14 @@ func benchmarkNthConditionalWaiter(b *testing.B, waiters int) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = sem.AwaitMoreOrEqual(ctxCanceled, int64(rand.Intn(capacity) + 1))
+		_ = sem.AwaitMoreOrEqual(ctxCanceled, int64(rand.Intn(capacity)+1))
 	}
 	b.StopTimer()
 }
 
 func BenchmarkNthConditionalWaiter(b *testing.B) {
-	for i := 1; i <= 10000; i*=10 {
-		b.Run(fmt.Sprintf("on-%d-cond-waiters-active", i), func(b *testing.B) {benchmarkNthConditionalWaiter(b, i)})
+	for i := 1; i <= 10000; i *= 10 {
+		b.Run(fmt.Sprintf("on-%d-cond-waiters-active", i), func(b *testing.B) { benchmarkNthConditionalWaiter(b, i) })
 	}
 }
 
@@ -174,7 +174,7 @@ func benchmarkAcquireConditionalWaiters(b *testing.B, waiters int) {
 	b.ResetTimer()
 	for _, c := range []struct {
 		size int64
-		N         int
+		N    int
 	}{
 		{1, 1},
 		{2, 1},
@@ -192,7 +192,7 @@ func benchmarkAcquireConditionalWaiters(b *testing.B, waiters int) {
 }
 
 func BenchmarkAcquireConditionalWaiters(b *testing.B) {
-	for i := 1; i <= 10000; i*=10 {
-		b.Run(fmt.Sprintf("on-%d-cond-waiters-active", i), func(b *testing.B) {benchmarkAcquireConditionalWaiters(b, i)})
+	for i := 1; i <= 10000; i *= 10 {
+		b.Run(fmt.Sprintf("on-%d-cond-waiters-active", i), func(b *testing.B) { benchmarkAcquireConditionalWaiters(b, i) })
 	}
 }

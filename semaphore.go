@@ -4,7 +4,7 @@
 
 /*
 Semaphore with awaiting methods ... TODO: write comment
- */
+*/
 package conditional_semaphore
 
 import (
@@ -19,6 +19,7 @@ type waiter struct {
 }
 
 type condWaiterKind int
+
 const (
 	moreOrEqual condWaiterKind = iota
 	lessOrEqual
@@ -26,8 +27,8 @@ const (
 
 type condWaiter struct {
 	condition int64
-	ready     chan<- struct{}  // Closed when condition triggered
-	kind condWaiterKind
+	ready     chan<- struct{} // Closed when condition triggered
+	kind      condWaiterKind
 }
 
 func isCondWaiterTrue(kind condWaiterKind, cur, condition int64) bool {
@@ -127,7 +128,7 @@ func (s *Weighted) Release(n int64) {
 		s.mu.Unlock()
 		panic("semaphore: released more than held")
 	}
-	s.notifyCondWaiters(lessOrEqual)  // Notify condWaiters before acquiring semaphore again by other waiters (if any)
+	s.notifyCondWaiters(lessOrEqual) // Notify condWaiters before acquiring semaphore again by other waiters (if any)
 	s.notifyWaiters()
 	s.mu.Unlock()
 }
@@ -176,7 +177,6 @@ func (s *Weighted) notifyWaiters() {
 		close(w.ready)
 	}
 }
-
 
 func (s *Weighted) conditionalAwait(ctx context.Context, n int64, condKind condWaiterKind) error {
 	if n < 0 {
@@ -237,7 +237,7 @@ func (s *Weighted) notifyCondWaiters(kind condWaiterKind) {
 		}
 
 		w := item.Value.(condWaiter)
-		if ! isCondWaiterTrue(kind, s.cur, w.condition) {
+		if !isCondWaiterTrue(kind, s.cur, w.condition) {
 			break
 		}
 

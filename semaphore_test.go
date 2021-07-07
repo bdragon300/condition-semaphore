@@ -42,7 +42,7 @@ func TestWeighted(t *testing.T) {
 			HammerWeighted(sem, int64(i), loops)
 		}()
 	}
-	wg.Wait()	
+	wg.Wait()
 }
 
 func TestWeightedPanic(t *testing.T) {
@@ -211,7 +211,7 @@ func TestAwaitMoreOrEqual_ConditionTriggering(t *testing.T) {
 	defer cancel()
 	ch := make(chan int64)
 	for i := 0; i < count; i++ {
-		item := rand.Int63n(n + 1)  // [0, n+1)
+		item := rand.Int63n(n + 1) // [0, n+1)
 		go func() {
 			if err := sem.AwaitMoreOrEqual(ctx, item); err != nil {
 				t.Fatalf("Error while awaiting for condition: %v", err)
@@ -255,7 +255,7 @@ func TestAwaitMoreOrEqual_ShouldAbortOnContextCancel(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	ch := make(chan error, count)
 	for i := 0; i < count; i++ {
-		item := rand.Int63n(n - 1) + 2 // [2, n+1)
+		item := rand.Int63n(n-1) + 2 // [2, n+1)
 		go func() {
 			var err error
 			if err = sem.AwaitMoreOrEqual(ctx, item); err == nil {
@@ -289,7 +289,7 @@ func TestAwaitLessOrEqual_ConditionTriggering(t *testing.T) {
 	sem.Acquire(context.Background(), n)
 
 	for i := 0; i < count; i++ {
-		item := rand.Int63n(n + 1)  // [0, n+1)
+		item := rand.Int63n(n + 1) // [0, n+1)
 		go func() {
 			if err := sem.AwaitLessOrEqual(ctx, item); err != nil {
 				t.Fatalf("Error while awaiting for condition: %v", err)
@@ -312,7 +312,7 @@ func TestAwaitLessOrEqual_ConditionTriggering(t *testing.T) {
 				}
 				triggered++
 			case <-time.After(10 * time.Millisecond):
-				carryOn = false  // No more goroutines with x<=i
+				carryOn = false // No more goroutines with x<=i
 			}
 		}
 		if i > 0 {
@@ -362,7 +362,7 @@ func TestAwaitMoreOrEqual_ShouldReturnErrorIfAwaitMoreThanSize(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	go func() {
-		if err := sem.AwaitMoreOrEqual(ctx, n + 1); err == nil {
+		if err := sem.AwaitMoreOrEqual(ctx, n+1); err == nil {
 			t.Fatal("Semaphore was unexpectedly unblocked instead of return an error")
 		}
 	}()
